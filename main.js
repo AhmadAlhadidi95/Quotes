@@ -1,5 +1,7 @@
 async function getQuotes() {
 
+	loader(true)
+
 	const url = `https://get-quotes-api.p.rapidapi.com/quotes`
 	
 	const headers = {
@@ -9,12 +11,28 @@ async function getQuotes() {
 		}
 	}
 
-    let response = await fetch(url, headers)
-    let data = await response.json()
+	try {
 
-	return data
+		let response = await fetch(url, headers)
+		let data = await response.json()
+
+		return data
+
+	} catch (error) {
+		console.error(error)
+	} finally {
+		loader(false)
+	}
 
 }
+
+let overLay = document.createElement("div")
+overLay.className = `overLay`
+
+let theImage = document.createElement("img")
+theImage.src = `pen.gif`
+
+overLay.appendChild(theImage)
 
 let theBox = document.createElement("div")
 theBox.className = `box`
@@ -56,7 +74,7 @@ buttonsBox.append(nextBtn, randomBtn, stopBtn)
 
 theBox.append(id, category, author, description, quote, buttonsBox)
 
-document.querySelector(".container").append(theBox, myInformation())
+document.querySelector(".container").append(overLay, theBox, myInformation())
 
 async function theLogic() {
 
@@ -111,6 +129,18 @@ async function theLogic() {
 
 }
 theLogic()
+
+function loader(show = true) {
+
+	if (show) {
+
+		overLay.style.visibility = "visible"
+		
+	} else {
+		overLay.style.visibility = "hidden"
+	}
+
+}
 
 function myInformation(myInfo) {
 
